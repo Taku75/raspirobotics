@@ -31,9 +31,9 @@ class Omni_Control:
         motor_array=np.array([vx,vy,omega])
         _speed = np.dot(A, motor_array)
         _speed = _speed.tolist()
-        self._speed[0] = _speed[0]
+        self._speed[0] = -1*_speed[0]
         self._speed[1] = _speed[1]
-        self._speed[2] = _speed[2]
+        self._speed[2] = -1*_speed[2]
         self._speed[3] = _speed[3]
         self._motors[0].speed = self._speed[0]*self._range
         self._motors[1].speed = self._speed[1]*self._range
