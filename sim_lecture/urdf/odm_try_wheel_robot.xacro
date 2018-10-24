@@ -1,0 +1,151 @@
+<?xml version="1.0"?>
+<robot name="odm_robot" xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:include filename="$(find sim_lecture)/urdf/odm_common.xacro"/>
+  <xacro:include filename="$(find sim_lecture)/urdf/odm_omni_wheel.xacro"/>
+  <xacro:include filename="$(find sim_lecture)/urdf/stereo_camera/stereo_camera.urdf.xacro"/>
+  <xacro:include filename="$(find sim_lecture)/urdf/cameras/bumblebee/bumblebee2.urdf.xacro"/>
+
+
+  <link name="base_link"/>
+
+  <joint name="body_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="body_link"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+  <!--<link name="base_footprint"/>
+  <joint name="base_link_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>-->
+
+  <link name="body_link">
+    <visual>
+      <geometry>
+        <box size="0.40 0.40 0.02" />
+      </geometry>
+      <material name="gray"/>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://sim_lecture/stl/omni_barrel.stl" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.4"/>
+      <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001"/>
+    </inertial>
+  </link>
+  <xacro:bumblebee2_66
+    parent_link="base_link"
+    xyz="0 0.2 0.09"
+    rpy="1.5707 3.1416 3.1416"
+    optical_parent_link="base_link"
+    optical_xyz="0 0.2 0.09"
+    optical_rpy="1.5707 3.1416 3.1416"
+    ns="stereo"
+    frame_prefix="stereo_"
+    high_res="false"/>
+
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+    <origin xyz="0 0 0.07" rpy="0 0 0"/>
+  </joint>
+  <link name="imu_link"/>
+  <gazebo reference="imu_link">
+    <gravity>true</gravity>
+    <sensor name="imu_sensor" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <topic>__default_topic__</topic>
+      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+        <topicName>imu</topicName>
+        <bodyName>imu_link</bodyName>
+        <updateRateHZ>10.0</updateRateHZ>
+        <gaussianNoise>0.0</gaussianNoise>
+        <xyzOffset>0 0 0</xyzOffset>
+        <rpyOffset>0 0 0</rpyOffset>
+        <frameName>imu_link</frameName>
+      </plugin>
+      <pose>0 0 0 0 0 0</pose>
+    </sensor>
+  </gazebo>
+
+
+  <joint name="motor0_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="motor0_base_link"/>
+    <origin xyz="${0.30*cos(pi*1/4)} ${0.30*sin(pi*1/4)} 0.019" rpy="0 0 ${pi*1/4}"/>
+  </joint>
+  <link name="motor0_base_link" />
+
+  <joint name="motor1_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="motor1_base_link"/>
+    <origin xyz="${0.30*cos(pi*3/4)} ${0.30*sin(pi*3/4)} 0.019" rpy="0 0 ${pi*3/4}"/>
+  </joint>
+  <link name="motor1_base_link" />
+
+  <joint name="motor2_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="motor2_base_link"/>
+    <origin xyz="${0.30*cos(pi*5/4)} ${0.30*sin(pi*5/4)} 0.019" rpy="0 0 ${pi*5/4}"/>
+  </joint>
+  <link name="motor2_base_link" />
+
+  <joint name="motor3_base_joint" type="fixed">
+    <parent link="base_link"/>
+    <child  link="motor3_base_link"/>
+    <origin xyz="${0.30*cos(pi*7/4)} ${0.30*sin(pi*7/4)} 0.019" rpy="0 0 ${pi*7/4}"/>
+  </joint>
+  <link name="motor3_base_link" />
+
+  <xacro:motor prefix="motor0" parent="motor0_base_link" />
+  <joint name="wheel0_base_joint" type="fixed">
+    <parent link="motor0_shaft_link"/>
+    <child  link="whell0_base_link"/>
+    <origin xyz="0.0105 0 0" rpy="0 ${pi/2} 0"/>
+  </joint>
+  <link name="whell0_base_link" />
+  <xacro:omni_wheel prefix="wheel0" parent="whell0_base_link" />
+
+  <xacro:motor prefix="motor1" parent="motor1_base_link" />
+  <joint name="wheel1_base_joint" type="fixed">
+    <parent link="motor1_shaft_link"/>
+    <child  link="whell1_base_link"/>
+    <origin xyz="0.0105 0 0" rpy="0 ${pi/2} 0"/>
+  </joint>
+  <link name="whell1_base_link" />
+  <xacro:omni_wheel prefix="wheel1" parent="whell1_base_link" />
+
+  <xacro:motor prefix="motor2" parent="motor2_base_link" />
+  <joint name="wheel2_base_joint" type="fixed">
+    <parent link="motor2_shaft_link"/>
+    <child  link="whell2_base_link"/>
+    <origin xyz="0.0105 0 0" rpy="0 ${pi/2} 0"/>
+  </joint>
+  <link name="whell2_base_link" />
+  <xacro:omni_wheel prefix="wheel2" parent="whell2_base_link" />
+
+  <xacro:motor prefix="motor3" parent="motor3_base_link" />
+  <joint name="wheel3_base_joint" type="fixed">
+    <parent link="motor3_shaft_link"/>
+    <child  link="whell3_base_link"/>
+    <origin xyz="0.0105 0 0" rpy="0 ${pi/2} 0"/>
+  </joint>
+  <link name="whell3_base_link" />
+  <xacro:omni_wheel prefix="wheel3" parent="whell3_base_link" />
+
+
+
+  <!-- ===============  Gazebo =============== -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/odm_robot</robotNamespace>
+    </plugin>
+  </gazebo>
+
+</robot>
