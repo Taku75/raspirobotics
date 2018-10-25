@@ -1,0 +1,22 @@
+<launch>
+
+	<!-- Arguments -->
+	<arg name="bagfile" default="test.bag"/> <!-- Find it on http://srv.uib.es/public/viso2_ros/sample_bagfiles/  -->
+  <arg name="camera" default="/base_link"/>
+  <param name="/use_sim_time" value="true"/>
+
+  <!-- Play the bagfile -->
+<!--<node pkg="tf" type="static_transform_publisher" name="to_odom" args="0.0 0.0 0.0 0 0 0.0 /odom /base_link 10"/>-->
+
+  <!--<node ns="$(arg camera)" pkg="stereo_image_proc" type="stereo_image_proc" name="stereo_image_proc" />-->
+  <!-- Run the stereo image proc -->
+
+  <!-- Viso2 -->
+  <node pkg="viso2_ros" type="stereo_odometer" name="stereo_odometer">
+    <remap from="stereo" to="stereo/camera"/>
+    <remap from="image" to="image_rect"/>
+    <!--<param name="base_link_frame_id" value="/base_link"/>-->
+    <!--<param name="sensor_frame_id" value="/stereo_optical_frame"/>-->
+  </node>
+
+</launch>

@@ -7,9 +7,9 @@ class Pwm:
         self.__range = range
         self.__duty = 0
         self.pi = pi
-        self.pi.set_PWM__frequency(self.__pwm_pin, self.__frequency)
-        self.pi.set_PWM__range(self.__pwm_pin, self.__range)
-        self.pi.set_PWM__dutycycle(self.__pwm_pin, self.__duty)
+        self.pi.set_PWM_frequency(self.__pwm_pin, self.__frequency)
+        self.pi.set_PWM_range(self.__pwm_pin, self.__range)
+        self.pi.set_PWM_dutycycle(self.__pwm_pin, self.__duty)
 
     @property
     def pwm_pin(self):
@@ -22,7 +22,7 @@ class Pwm:
     @frequency.setter
     def frequency(self, frequency):
         self.__frequency = frequency
-        self.pi.set_PWM__frequency(self.__pwm_pin, self.__frequency)
+        self.pi.set_PWM_frequency(self.__pwm_pin, self.__frequency)
 
     @property
     def range(self):
@@ -32,8 +32,8 @@ class Pwm:
     def range(self, range):
         self.__duty = int(self.__duty * range / self.__range)
         self.__range = range
-        self.pi.set_PWM__range(self.__pwm_pin, self.__range)
-        self.pi.set_PWM__dutycycle(self.__pwm_pin, self.__duty)
+        self.pi.set_PWM_range(self.__pwm_pin, self.__range)
+        self.pi.set_PWM_dutycycle(self.__pwm_pin, self.__duty)
 
     @property
     def duty(self):
@@ -46,4 +46,4 @@ class Pwm:
             self.__duty = self.__range
         elif(self.__duty < 0):
             self.__duty = 0
-        self.pi.set_PWM__dutycycle(self.__pwm_pin, self.__duty)
+        self.pi.set_PWM_dutycycle(self.__pwm_pin, self.__duty)

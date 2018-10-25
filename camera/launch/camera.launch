@@ -1,0 +1,26 @@
+<launch>
+<group ns="stereo">
+  <node pkg="usb_cam" type="usb_cam_node" name="right" output="screen" >
+
+    <param name="video_device" value="/dev/video2" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <!--<param name="camera_info_url" value="file:///home/takumi/robot/src/camera/head_camera.yaml" />-->
+    <param name="pixel_format" value="mjpeg" />
+
+ </node>
+
+
+  <node pkg="usb_cam" type="usb_cam_node" name="left" output="screen" >
+
+    <param name="video_device" value="/dev/video3" />
+    <param name="image_width" value="640" />
+    <param name="image_height" value="480" />
+    <!--<param name="camera_info_url" value="file:///home/takumi/robot/src/camera/head_camera.yaml" />-->
+    <param name="pixel_format" value="mjpeg" />
+
+ </node>
+
+  <node name="stereo_image_proc" pkg="stereo_image_proc" type="stereo_image_proc" args="_approximate_sync:=True" output="screen"/>
+</group>
+</launch>

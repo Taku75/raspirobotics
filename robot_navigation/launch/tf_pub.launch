@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <node name="imu_broadcaster" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_link imu_link 100"/>
+  <node name="footprint_broadcaster" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 base_footprint base_link 100"/>
+  <node name="stereo_broadcaster" pkg="tf" type="static_transform_publisher" args="0 0 0 1.5707 3.1416 3.1416 base_link stereo_optical_frame 100"/>
+
+</launch>
