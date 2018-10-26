@@ -7,7 +7,17 @@ from tf2_msgs.msg import TFMessage
 from geometry_msgs.msg import TransformStamped
 from nav_msgs.msg import Odometry
 from math import *
+import pigpio
+from motor import Motor
+from omni_Whiles import Omni_Control
+pi = pigpio.pi()
+ur_motor = Motor(pi,14,15)
+ul_motor = Motor(pi,17,18)
+dr_motor = Motor(pi,22,23)
+dl_motor = Motor(pi,9,25)
 
+motors = [ur_motor, ul_motor, dl_motor, dr_motor]
+omni_control = Omni_Control(motors, 0.5)
 twist_last = Twist()
 twist_enable = False
 jointstate = TFMessage()
@@ -24,10 +34,8 @@ wheel=[pi/4, 3*pi/4, 5*pi/4, 7*pi/4]
 wheel_normal=[0,0,0,0]
 
 def calculation(out, input):
-    for i in range(4):
-        out[i]=(cos(wheel_normal[i])*input[0]+sin(wheel_normal[i])*input[1])/wheel_radius
-        out[i]+=input[2]*wheel_base/wheel_radius
-    return out[0], out[1], out[2], out[3]
+    global omni_control
+    omni_control(input[0],input[1],input[2])
 
 
 if __name__ == '__main__':
@@ -60,15 +68,6 @@ if __name__ == '__main__':
             input[0]=twist_last.linear.x
             input[1]=twist_last.linear.y
             input[2]=twist_last.angular.z
-            out[0], out[1], out[2], out[3] = calculation(out,input);
-            data=[0,0,0,0];
-            data[0]=Float64(out[0])
-            data[1]=Float64(out[1])
-            data[2]=Float64(out[2])
-            data[3]=Float64(out[3])
-            wheel0_pub.publish(data[0])
-            wheel1_pub.publish(data[1])
-            wheel2_pub.publish(data[2])
-            wheel3_pub.publish(data[3])
+            calculation(out,input);
 
         loop_rate.sleep()
